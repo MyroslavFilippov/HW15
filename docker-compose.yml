@@ -2,14 +2,35 @@ version: '3'
 
 services:
   nginx:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
+    image: danday74/nginx-lua
+    container_name: nginx
     volumes:
-      - ./src:/var/www/html
-      - ./nginx.conf:/nginx/conf/nginx.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - uk_server
+      - us_server1
+      - us_server2
+      - other_server
+      - backup_server
 
+  uk_server:
+    image: nginx:latest
+    container_name: uk_server
 
+  us_server1:
+    image: nginx:latest
+    container_name: us_server1
 
+  us_server2:
+    image: nginx:latest
+    container_name: us_server2
+
+  other_server:
+    image: nginx:latest
+    container_name: other_server
+
+  backup_server:
+    image: nginx:latest
+    container_name: backup_server
